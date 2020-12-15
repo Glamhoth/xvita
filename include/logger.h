@@ -7,6 +7,8 @@
 #define LOGGER_PATH "ux0:tmp/"
 #define LOGGER_FILENAME LOGGER_PATH "xvita.log"
 
+char* itoa(int value, char* result, int base);
+
 void logger_write(const char* buffer, const size_t len);
 void logger_reset();
 void logger_flush();
