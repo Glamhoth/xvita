@@ -27,10 +27,14 @@ sceBt_sub_22999C8_hook_func(void* dev_base_ptr, int r1)
         const void* dev_info = *(const void**) (dev_base_ptr + 0x14A4);
         const unsigned short* vid_pid = (const unsigned short*) (dev_info + 0x28);
 
-        if(is_sn30pro(vid_pid)) {
+        if(is_sn30pro(vid_pid))
+        {
             LOG("8BitDo SN30pro connected\n");
+            logger_flush();
+
+            unsigned int* v8_ptr = (unsigned int*)(*(unsigned int*)dev_base_ptr + 8);
+            *v8_ptr |= 0x11000;
         }
-        logger_flush();
     }
 
     return TAI_CONTINUE(int, sceBt_sub_22999C8_ref, dev_base_ptr, r1);
@@ -61,6 +65,7 @@ module_start(SceSize argc, const void* args)
             &sceBt_sub_22999C8_ref, sceBt_modinfo.modid, 0,
             0x22999C8 - 0x2280000, 1, sceBt_sub_22999C8_hook_func);
 
+    logger_flush();
     return SCE_KERNEL_START_SUCCESS;
 
 error:
